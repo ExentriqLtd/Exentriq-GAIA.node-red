@@ -143,6 +143,9 @@
             }
 
             this.handleDebugMessage = function(t,o) {
+        		if(o.owner && o.owner!=RED.settings.user.username){
+        		    return;
+        		}
                 var msg = document.createElement("div");
 
                 var sourceNode = RED.nodes.node(o.id) || RED.nodes.node(o.z);

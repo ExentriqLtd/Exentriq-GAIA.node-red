@@ -119,6 +119,10 @@ RED.tabs = (function() {
 
         return {
             addTab: function(tab) {
+        	//Calogero: not needed, because api returns only user nodes
+//        	if(tab.owner && tab.owner!=RED.settings.user.username){
+//        	    return;
+//        	}
                 tabs[tab.id] = tab;
                 var li = $("<li/>",{class:"red-ui-tab"}).appendTo(ul);
                 li.data("tabId",tab.id);
@@ -236,11 +240,13 @@ RED.tabs = (function() {
                 return ul.find("a[href='#"+id+"']").length > 0;
             },
             renameTab: function(id,label) {
-                tabs[id].label = label;
-                var tab = ul.find("a[href='#"+id+"']");
-                tab.attr("title",label);
-                tab.find("span").text(label);
-                updateTabWidths();
+        	if(tabs[id]){
+                    tabs[id].label = label;
+                    var tab = ul.find("a[href='#"+id+"']");
+                    tab.attr("title",label);
+                    tab.find("span").text(label);
+                    updateTabWidths();
+        	}
             },
             order: function(order) {
                 var existingTabOrder = $.makeArray(ul.children().map(function() { return $(this).data('tabId');}));

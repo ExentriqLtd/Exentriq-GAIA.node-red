@@ -67,7 +67,7 @@ module.exports = function(RED) {
 
         if (node.isServer) {
             var path = RED.settings.httpNodeRoot || "/";
-            path = path + (path.slice(-1) == "/" ? "":"/") + (node.path.charAt(0) == "/" ? node.path.substring(1) : node.path);
+            path = "/"+n.owner+path + (path.slice(-1) == "/" ? "":"/") + (node.path.charAt(0) == "/" ? node.path.substring(1) : node.path);
 
             // Workaround https://github.com/einaros/ws/pull/253
             // Listen for 'newListener' events from RED.server

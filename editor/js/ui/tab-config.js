@@ -131,6 +131,10 @@ RED.sidebar.config = (function() {
         } else {
             var currentType = "";
             nodes.forEach(function(node) {
+        	//Calogero: not needed, because api returns only user nodes
+//        	if(node.owner && node.owner!=RED.settings.user.username){
+//        	    return;
+//        	}
                 var label = "";
                 if (typeof node._def.label == "function") {
                     try {
@@ -193,10 +197,18 @@ RED.sidebar.config = (function() {
         getOrCreateCategory("global",globalCategories);
 
         RED.nodes.eachWorkspace(function(ws) {
+            //Calogero: not needed, because api returns only user nodes
+//            if(ws.owner && ws.owner!=RED.settings.user.username){
+//        	return;
+//            }
             validList[ws.id.replace(/\./g,"-")] = true;
             getOrCreateCategory(ws.id,flowCategories,ws.label);
         })
         RED.nodes.eachSubflow(function(sf) {
+            //Calogero: not needed, because api returns only user nodes
+//            if(sf.owner && sf.owner!=RED.settings.user.username){
+//        	return;
+//            }
             validList[sf.id.replace(/\./g,"-")] = true;
             getOrCreateCategory(sf.id,subflowCategories,sf.name);
         })

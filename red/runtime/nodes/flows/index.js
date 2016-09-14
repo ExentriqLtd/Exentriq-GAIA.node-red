@@ -79,7 +79,23 @@ function load() {
 
 function setConfig(_config,type,muteLog) {
     var config = clone(_config);
+    
     type = type||"full";
+    
+    if(type != 'load'){
+	var oldConfig = clone(activeConfig);
+	if(config.length>0){
+	    username = config[0].owner;
+	    oldConfig.forEach(function(item){
+		if(item.owner!=username){
+		    config.push(item);
+		}
+	    });
+	 }
+	 else{
+	     config = oldConfig;
+	 }    
+    }
 
     var credentialsChanged = false;
     var credentialSavePromise = null;
@@ -150,8 +166,19 @@ function eachNode(cb) {
     }
 }
 
-function getConfig() {
-    return activeConfig;
+function getConfig(username) {
+    if(!activeConfig || !username){
+	return activeConfig;
+    }
+    else{
+	var tempConfig = [];
+	activeConfig.forEach(function(confNode){
+	    if(confNode.owner==username){
+		tempConfig.push(confNode);
+	    }
+	});
+	return tempConfig;
+    }
 }
 
 function delegateError(node,logMessage,msg) {

@@ -385,6 +385,13 @@ RED.nodes = (function() {
         var node = {};
         node.id = n.id;
         node.type = n.type;
+        if(n.owner){
+            node.owner=n.owner;
+        }
+        else{
+            node.owner=RED.settings.user.username;
+        }
+        
         for (var d in n._def.defaults) {
             if (n._def.defaults.hasOwnProperty(d)) {
                 node[d] = n[d];
@@ -401,6 +408,12 @@ RED.nodes = (function() {
         node.id = n.id;
         node.type = n.type;
         node.z = n.z;
+        if(n.owner){
+            node.owner=n.owner;
+        }
+        else{
+            node.owner=RED.settings.user.username;
+        }
         if (node.type == "unknown") {
             for (var p in n._orig) {
                 if (n._orig.hasOwnProperty(p)) {
@@ -459,6 +472,13 @@ RED.nodes = (function() {
         node.info = n.info;
         node.in = [];
         node.out = [];
+        
+        if(n.owner){
+            node.owner=n.owner;
+        }
+        else{
+            node.owner=RED.settings.user.username;
+        }
 
         n.in.forEach(function(p) {
             var nIn = {x:p.x,y:p.y,wires:[]};
@@ -757,7 +777,7 @@ RED.nodes = (function() {
                 }
 
                 if (!existingConfigNode) { //} || !compareNodes(existingConfigNode,n,true) || existingConfigNode._def.exclusive || existingConfigNode.z !== n.z) {
-                    configNode = {id:n.id, z:n.z, type:n.type, users:[]};
+                    configNode = {id:n.id, z:n.z, type:n.type, users:[], owner:n.owner};
                     for (var d in def.defaults) {
                         if (def.defaults.hasOwnProperty(d)) {
                             configNode[d] = n[d];
@@ -783,6 +803,7 @@ RED.nodes = (function() {
                 def = registry.getNodeType(n.type);
                 if (!def || def.category != "config") {
                     var node = {x:n.x,y:n.y,z:n.z,type:0,wires:n.wires,changed:false};
+                    node.owner=n.owner;
                     if (createNewIds) {
                         if (subflow_map[node.z]) {
                             node.z = subflow_map[node.z].id;

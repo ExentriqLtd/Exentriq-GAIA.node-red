@@ -69,11 +69,13 @@ var RED = (function() {
     function loadFlows() {
         $.ajax({
             headers: {
-                "Accept":"application/json"
+                "Accept":"application/json",
+                "username":RED.settings.user.username
             },
             cache: false,
             url: 'flows',
             success: function(nodes) {
+        	console.log(nodes);
                 RED.nodes.import(nodes);
                 RED.nodes.dirty(false);
                 RED.view.redraw(true);

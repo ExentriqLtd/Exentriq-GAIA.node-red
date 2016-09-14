@@ -172,7 +172,7 @@ module.exports = function(RED) {
                 this.warn(RED._("httpin.errors.missing-path"));
                 return;
             }
-            this.url = n.url;
+            this.url = "/"+n.owner+n.url;
             this.method = n.method;
             this.swaggerDoc = n.swaggerDoc;
 
