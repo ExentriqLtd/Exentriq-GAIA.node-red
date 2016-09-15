@@ -90,19 +90,7 @@ module.exports = {
     // -----------------
     // To password protect the Node-RED editor and admin API, the following
     // property can be used. See http://nodered.org/docs/security.html for details.
-    adminAuth: {
-        type: "credentials",
-        users: [{
-            username: "admin",
-            password: "$2a$08$EBIBx2cyWbto.etZS2xS/OE3XcIOigJ8tLSFIs6cSWHPk1DwhP5Ce",
-            permissions: "*"
-        },
-        {
-            username: "calosan",
-            password: "$2a$08$EBIBx2cyWbto.etZS2xS/OE3XcIOigJ8tLSFIs6cSWHPk1DwhP5Ce",
-            permissions: "*"
-        }]
-    },
+    adminAuth: require("./exentriq-authentication.json"),
 
     // To password protect the node-defined HTTP endpoints (httpNodeRoot), or
     // the static content (httpStatic), the following properties can be used.

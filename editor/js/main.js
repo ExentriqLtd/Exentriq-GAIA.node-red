@@ -75,7 +75,6 @@ var RED = (function() {
             cache: false,
             url: 'flows',
             success: function(nodes) {
-        	console.log(nodes);
                 RED.nodes.import(nodes);
                 RED.nodes.dirty(false);
                 RED.view.redraw(true);

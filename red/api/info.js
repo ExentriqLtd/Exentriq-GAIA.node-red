@@ -25,7 +25,8 @@ module.exports = {
         var safeSettings = {
             httpNodeRoot: settings.httpNodeRoot,
             version: settings.version,
-            user: req.user
+            user: req.user,
+            company: req.authInfo.company
         }
 
         var themeSettings = theme.settings();

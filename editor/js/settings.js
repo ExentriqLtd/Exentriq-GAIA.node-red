@@ -75,6 +75,25 @@ RED.settings = (function () {
             RED.settings.set("auth-tokens",{access_token: accessToken});
             window.location.search = "";
         }
+        
+	var exentriqToken = null;
+        var exentriqTokenMatch = /[?&]sessionToken=(.*?)(?:$|&)/.exec(window.location.search);
+        if (exentriqTokenMatch) {
+            var exentriqToken = exentriqTokenMatch[1];
+            RED.settings.set("auth-tokens",{access_token: null});
+        }
+        
+        var exentriqUsername = null;
+        var exentriqUsernameMatch = /[?&]username=(.*?)(?:$|&)/.exec(window.location.search);
+        if (exentriqUsernameMatch) {
+            var exentriqUsername = exentriqUsernameMatch[1];
+        }
+        
+        var exentriqCompany = null;
+        var exentriqCompanyMatch = /[?&]company=(.*?)(?:$|&)/.exec(window.location.search);
+        if (exentriqCompanyMatch) {
+            var exentriqCompany = exentriqCompanyMatch[1];
+        }
 
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
@@ -88,10 +107,10 @@ RED.settings = (function () {
             }
         });
 
-        load(done);
+        load(done, exentriqUsername, exentriqToken, exentriqCompany);
     }
 
-    var load = function(done) {
+    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany) {
         $.ajax({
             headers: {
                 "Accept": "application/json"
@@ -99,7 +118,7 @@ RED.settings = (function () {
             dataType: "json",
             cache: false,
             url: 'settings',
-            success: function (data) {
+            success: function (data) {        	
                 setProperties(data);
                 if (RED.settings.user && RED.settings.user.anonymous) {
                     RED.settings.remove("auth-tokens");
@@ -112,7 +131,37 @@ RED.settings = (function () {
                     if (/[?&]access_token=(.*?)(?:$|&)/.test(window.location.search)) {
                         window.location.search = "";
                     }
-                    RED.user.login(function() { load(done); });
+                    
+                	if(exentriqToken){
+                	    
+                	var userAndCompany = JSON.stringify({"username":exentriqUsername, "company":exentriqCompany});    
+                	    
+                	var body = {
+                                client_id: "node-red-editor",
+                                grant_type: "password",
+                                scope:"",
+                                username: userAndCompany,
+                                password: exentriqToken
+                            }
+                            $.ajax({
+                                url:"auth/token",
+                                type: "POST",
+                                data: body
+                            }).done(function(data,textStatus,xhr) {
+                                RED.settings.set("auth-tokens",data);
+                                $("#node-dialog-login").dialog('destroy').remove();
+                                window.location.replace("/");
+                            }).fail(function(jqXHR,textStatus,errorThrown) {
+                                RED.settings.remove("auth-tokens");
+                                $("#node-dialog-login-failed").show();
+                            }).always(function() {
+                                $("#node-dialog-login-submit").button("option","disabled",false);
+                            });
+                    }
+                    else{
+                	RED.user.login(function() { load(done); });
+                    }
+                    
                 } else {
                     console.log("Unexpected error:",jqXHR.status,textStatus);
                 }

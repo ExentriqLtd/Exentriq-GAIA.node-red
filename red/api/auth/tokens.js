@@ -81,7 +81,8 @@ module.exports = {
             return when.resolve(sessions[token]);
         });
     },
-    create: function(user,client,scope) {
+    create: function(user,client,scope, company) {
+	
         return loadSessions().then(function() {
             var accessToken = generateToken(128);
 
@@ -91,6 +92,7 @@ module.exports = {
                 user:user,
                 client:client,
                 scope:scope,
+                company:company,
                 accessToken: accessToken,
                 expires: accessTokenExpiresAt
             };

@@ -34,7 +34,7 @@ var bearerStrategy = function (accessToken, done) {
         if (token) {
             Users.get(token.user).then(function(user) {
                 if (user) {
-                    done(null,user,{scope:token.scope});
+                    done(null,user,{scope:token.scope, company:token.company});
                 } else {
                     log.audit({event: "auth.invalid-token"});
                     done(null,false);
@@ -92,7 +92,7 @@ var passwordTokenExchange = function(client, username, password, scope, done) {
                 loginAttempts = loginAttempts.filter(function(logEntry) {
                     return logEntry.user !== username;
                 });
-                Tokens.create(username,client.id,scope).then(function(tokens) {
+                Tokens.create(user.username,client.id,scope, user.company).then(function(tokens) {
                     log.audit({event: "auth.login",username:username,client:client.id,scope:scope});
                     done(null,tokens.accessToken,null,{expires_in:tokens.expires_in});
                 });
