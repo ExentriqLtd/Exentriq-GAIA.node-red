@@ -85,9 +85,9 @@ function setConfig(_config,type,muteLog) {
     if(type != 'load'){
 	var oldConfig = clone(activeConfig);
 	if(config.length>0){
-	    username = config[0].owner;
+	    company = config[0].owner;
 	    oldConfig.forEach(function(item){
-		if(item.owner!=username){
+		if(item.owner!=company){
 		    config.push(item);
 		}
 	    });
@@ -166,14 +166,14 @@ function eachNode(cb) {
     }
 }
 
-function getConfig(username) {
-    if(!activeConfig || !username){
+function getConfig(company) {
+    if(!activeConfig || !company){
 	return activeConfig;
     }
     else{
 	var tempConfig = [];
 	activeConfig.forEach(function(confNode){
-	    if(confNode.owner==username){
+	    if(confNode.owner==company){
 		tempConfig.push(confNode);
 	    }
 	});

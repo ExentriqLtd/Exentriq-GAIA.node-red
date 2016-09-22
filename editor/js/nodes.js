@@ -389,7 +389,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.user.username;
+            node.owner=RED.settings.company.id;
         }
         
         for (var d in n._def.defaults) {
@@ -412,7 +412,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.user.username;
+            node.owner=RED.settings.company.id;
         }
         if (node.type == "unknown") {
             for (var p in n._orig) {
@@ -477,7 +477,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.user.username;
+            node.owner=RED.settings.company.id;
         }
 
         n.in.forEach(function(p) {

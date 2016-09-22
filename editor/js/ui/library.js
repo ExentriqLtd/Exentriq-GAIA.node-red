@@ -21,7 +21,8 @@ RED.library = (function() {
     function loadFlowLibrary() {
         $.getJSON("library/flows",function(allData) {
             
-            var data = allData.d[RED.settings.user.username];
+            var data = allData.d[RED.settings.company.id];
+            console.log(RED.settings.company);
             if(!data){
         	data={};
             }
@@ -60,7 +61,7 @@ RED.library = (function() {
                             a.innerHTML = data.f[i];
                             a.flowName = root+(root!==""?"/":"")+data.f[i];
                             a.onclick = function() {
-                                $.get('library/flows/'+RED.settings.user.username+"/"+this.flowName, function(data) {
+                                $.get('library/flows/'+RED.settings.company.id+"/"+this.flowName, function(data) {
                                     RED.view.importNodes(data);
                                 });
                             };
@@ -127,7 +128,7 @@ RED.library = (function() {
                             var bcli = $('<li class="active"><span class="divider">/</span> <a href="#">'+dirName+'</a></li>');
                             $("a",bcli).click(function(e) {
                                 $(this).parent().nextAll().remove();
-                                $.getJSON("library/"+options.url+"/"+RED.settings.user.username+root+dirName,function(data) {
+                                $.getJSON("library/"+options.url+"/"+RED.settings.company.id+root+dirName,function(data) {
                                     $("#node-select-library").children().first().replaceWith(buildFileList(root+dirName+"/",data));
                                 });
                                 e.stopPropagation();
@@ -135,7 +136,7 @@ RED.library = (function() {
                             var bc = $("#node-dialog-library-breadcrumbs");
                             $(".active",bc).removeClass("active");
                             bc.append(bcli);
-                            $.getJSON("library/"+options.url+"/"+RED.settings.user.username+root+dirName,function(data) {
+                            $.getJSON("library/"+options.url+"/"+RED.settings.company.id+root+dirName,function(data) {
                                 $("#node-select-library").children().first().replaceWith(buildFileList(root+dirName+"/",data));
                             });
                         }
@@ -151,7 +152,7 @@ RED.library = (function() {
                         return function(e) {
                             $(".list-selected",ul).removeClass("list-selected");
                             $(this).addClass("list-selected");
-                            $.get("library/"+options.url+"/"+RED.settings.user.username+root+item.fn, function(data) {
+                            $.get("library/"+options.url+"/"+RED.settings.company.id+root+item.fn, function(data) {
                                 selectedLibraryItem = item;
                                 libraryEditor.setValue(data,-1);
                             });
@@ -180,7 +181,7 @@ RED.library = (function() {
             bc.children().first().nextAll().remove();
             libraryEditor.setValue('',-1);
 
-            $.getJSON("library/"+options.url+"/"+RED.settings.user.username,function(data) {
+            $.getJSON("library/"+options.url+"/"+RED.settings.company.id,function(data) {
         	
         	console.log(data);
         	
@@ -307,7 +308,7 @@ RED.library = (function() {
                 RED.notify(RED._("library.invalidFilename"),"warning");
                 return;
             }
-            var fullpath = RED.settings.user.username+"/"+pathname+(pathname===""?"":"/")+filename;
+            var fullpath = RED.settings.company.id+"/"+pathname+(pathname===""?"":"/")+filename;
             if (!overwrite) {
                 //var pathnameParts = pathname.split("/");
                 //var exists = false;
@@ -457,7 +458,7 @@ RED.library = (function() {
                             text: RED._("common.label.export"),
                             click: function() {
                                 //TODO: move this to RED.library
-                                var flowName = RED.settings.user.username+"/"+$("#node-input-library-filename").val();
+                                var flowName = RED.settings.company.id+"/"+$("#node-input-library-filename").val();
                                 if (!/^\s*$/.test(flowName)) {
                                     $.ajax({
                                         url:'library/flows/'+flowName,

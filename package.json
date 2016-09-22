@@ -1,7 +1,7 @@
 {
-    "name"         : "node-red",
-    "version"      : "0.14.6",
-    "description"  : "A visual tool for wiring the Internet of Things",
+    "name"         : "node-red-gaia",
+    "version"      : "0.14.8",
+    "description"  : "A visual tool for wiring the Internet of Things (Fork of node-red@0.14.6)",
     "homepage"     : "http://nodered.org",
     "license"      : "Apache-2.0",
     "repository"   : {
@@ -14,8 +14,8 @@
         "test": "./node_modules/.bin/grunt"
     },
     "bin"          : {
-        "node-red": "./red.js",
-        "node-red-pi": "bin/node-red-pi"
+        "node-red-gaia": "./red.js",
+        "node-red-gaia-pi": "bin/node-red-pi"
     },
     "contributors": [
         {"name": "Nick O'Leary"},

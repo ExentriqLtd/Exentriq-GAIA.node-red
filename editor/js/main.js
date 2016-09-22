@@ -70,7 +70,7 @@ var RED = (function() {
         $.ajax({
             headers: {
                 "Accept":"application/json",
-                "username":RED.settings.user.username
+                "company":RED.settings.company.id
             },
             cache: false,
             url: 'flows',

@@ -26,8 +26,8 @@ module.exports = {
     },
     get: function(req,res) {
         log.audit({event: "flows.get"},req);
-        var username = req.get("username");
-        res.json(redNodes.getFlows(username));
+        var company = req.get("company");
+        res.json(redNodes.getFlows(company));
     },
     post: function(req,res) {
         var flows = req.body;

@@ -29,28 +29,40 @@ module.exports = {
 	   var username = uc.username;
 	   var company = uc.company;
 	   
+	   var exentriqServicePath = 'http://stage.exentriq.com/JSON-RPC';
+	   
+	   var companyName = '';
+	   
 	   var entity=JSON.stringify({ id: '', method: 'auth.loginBySessionToken', params: [sessionToken] });
-	   rest({path:'http://stage.exentriq.com/JSON-RPC', method:"POST", entity:entity}).then(function(result) {
+	   rest({path:exentriqServicePath, method:"POST", entity:entity}).then(function(result) {
 	       
 	       var valid = false;
 	       if(result && result.entity){
 		   var resUsername = JSON.parse(result.entity).result.username;
 		   if(resUsername==username){
-		       valid=true;
+		       var entity2=JSON.stringify({ id: '', method: 'spaceAppPermission.hasSpacePermission', params: [username, company] });
+		       rest({path:exentriqServicePath, method:"POST", entity:entity2}).then(function(result) {
+			   
+			   if(result && result.entity){
+			       var auth = JSON.parse(JSON.parse(result.entity).result).auth;
+			       if(auth){
+				   var spaceName = JSON.parse(JSON.parse(result.entity).result).space;
+				   companyName = spaceName;
+				   valid = true;
+			       }
+			   }
+			       
+			   if (valid) {
+			       var user = { username: username, permissions: "*", company:{name:companyName, id:company} };
+			       resolve(user);
+			   } else {
+			       resolve(null);
+			   }
+		       });
 		   }
 	       }
 	       
-	       if (valid) {
-		   // Resolve with the user object. Equivalent to having
-		   // called users(username);
-		   var user = { username: username, permissions: "*", company:company };
-		   resolve(user);
-	       } else {
-		   // Resolve with null to indicate the username/password pair
-		   // were not valid.
-		   resolve(null);
-	       }
-	    });
+	   });
        });
    },
    default: function() {
