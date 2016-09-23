@@ -72,6 +72,7 @@ module.exports = {
         }
     },
     editor: function(req,res) {
+	theme.context().page.css = req.query.css
         res.send(Mustache.render(editorTemplate,theme.context()));
     },
     editorResources: express.static(__dirname + '/../../public')

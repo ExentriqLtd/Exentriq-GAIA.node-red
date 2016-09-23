@@ -94,6 +94,12 @@ RED.settings = (function () {
         if (exentriqCompanyMatch) {
             var exentriqCompany = exentriqCompanyMatch[1];
         }
+        
+        var css = '';
+        var cssMatch = /[?&]css=(.*?)(?:$|&)/.exec(window.location.search);
+        if (cssMatch) {
+            var css = cssMatch[1];
+        }
 
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
@@ -107,10 +113,10 @@ RED.settings = (function () {
             }
         });
 
-        load(done, exentriqUsername, exentriqToken, exentriqCompany);
+        load(done, exentriqUsername, exentriqToken, exentriqCompany, css);
     }
 
-    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany) {
+    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany, css) {
         $.ajax({
             headers: {
                 "Accept": "application/json"
@@ -150,7 +156,7 @@ RED.settings = (function () {
                             }).done(function(data,textStatus,xhr) {
                                 RED.settings.set("auth-tokens",data);
                                 $("#node-dialog-login").dialog('destroy').remove();
-                                window.location.replace("/");
+                                window.location.replace("/?css="+css);
                             }).fail(function(jqXHR,textStatus,errorThrown) {
                                 RED.settings.remove("auth-tokens");
                                 $("#node-dialog-login-failed").show();
