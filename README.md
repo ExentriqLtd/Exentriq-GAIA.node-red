@@ -73,4 +73,4 @@ For more open-source projects from IBM, head over [here](http://ibm.github.io).
 Copyright 2013, 2016 IBM Corp. under [the Apache 2.0 license](LICENSE).
 
 ## Exentriq example URL
-http://127.0.0.1:1880/?sessionToken=1473950811145624761&username=demo@exentriq.com&company=CPN_NAME
+http://127.0.0.1:1880/?sessionToken=xyz&username=demo&company=example&css=http://example.com/custom.css&servicePath=http://127.0.0.1:1880/

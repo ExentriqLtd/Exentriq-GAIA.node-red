@@ -103,6 +103,13 @@ RED.sidebar.info = (function() {
                 for (var n in node._def.defaults) {
                     if (n != "name" && node._def.defaults.hasOwnProperty(n)) {
                         var val = node[n];
+                        if(node && node.type=='http in' && n=='url'){
+                            var servicePath = RED.settings.servicePath;
+                            if(!servicePath.endsWith('/')){
+                        	servicePath+='/';
+                            }
+                            val = servicePath+''+node.owner+val;
+                        }
                         var type = typeof val;
                         if (val === null || val === undefined) {
                             val = '<span style="font-style: italic; color: #ccc;">'+RED._("sidebar.info.null")+'</span>';
@@ -110,8 +117,8 @@ RED.sidebar.info = (function() {
                             if (val.length === 0) {
                                 val = '<span style="font-style: italic; color: #ccc;">'+RED._("sidebar.info.blank")+'</span>';
                             } else {
-                                if (val.length > 30) {
-                                    val = val.substring(0,30)+" ...";
+                                if (val.length > 60) {
+                                    val = val.substring(0,60)+" ...";
                                 }
                                 val = val.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
                             }
