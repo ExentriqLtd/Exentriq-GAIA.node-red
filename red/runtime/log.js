@@ -16,6 +16,7 @@
 
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
+var winston = require('winston');
 
 var i18n = require("./i18n");
 
@@ -105,7 +106,21 @@ var log = module.exports = {
                     if ((keys[i] === "console") || config.handler) {
                         log.addHandler(new LogHandler(loggerSettings));
                     }
+                    if ((keys[i] === "winston")) {
+                        var wlogger = new winston.Logger({
+                            level: 'info',
+                            transports: [
+                              new (winston.transports.File)({ filename: config.file })
+                            ]
+                          });
+                        var winstonLogHandler = new EventEmitter();
+                        winstonLogHandler.on("log",function(msg) {
+                            wlogger.log('info', msg);
+                        });
+                        log.addHandler(winstonLogHandler);
+                    }
                 }
+                
             }
         } else {
             log.addHandler(new LogHandler());

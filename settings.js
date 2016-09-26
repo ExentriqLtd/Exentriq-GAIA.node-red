@@ -177,6 +177,9 @@ module.exports = {
             metrics: false,
             // Whether or not to include audit events in the log output
             audit: false
+        },
+        winston: {
+            file: 'node-red-gaia-winston.log'
         }
     }
 }
