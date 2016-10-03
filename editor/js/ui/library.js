@@ -22,7 +22,6 @@ RED.library = (function() {
         $.getJSON("library/flows",function(allData) {
             
             var data = allData.d[RED.settings.company.id];
-            console.log(RED.settings.company);
             if(!data){
         	data={};
             }

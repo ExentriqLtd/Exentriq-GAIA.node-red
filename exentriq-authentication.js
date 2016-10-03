@@ -1,5 +1,8 @@
+var exentriqServicePath = 'http://stage.exentriq.com/JSON-RPC';
 var when = require("when");
 var rest = require('rest');
+require('when/es6-shim/Promise');
+//var Promise = require('es6-promise').Promise;
 
 module.exports = {
    type: "credentials",
@@ -28,16 +31,13 @@ module.exports = {
 	   var uc = JSON.parse(usernameAndCompany);
 	   var username = uc.username;
 	   var company = uc.company;
-	   
-	   var exentriqServicePath = 'http://stage.exentriq.com/JSON-RPC';
-	   
 	   var companyName = '';
 	   
 	   var entity=JSON.stringify({ id: '', method: 'auth.loginBySessionToken', params: [sessionToken] });
 	   rest({path:exentriqServicePath, method:"POST", entity:entity}).then(function(result) {
 	       
 	       var valid = false;
-	       if(result && result.entity){
+	       if(result && result.entity && JSON.parse(result.entity).result){
 		   var resUsername = JSON.parse(result.entity).result.username;
 		   if(resUsername==username){
 		       var entity2=JSON.stringify({ id: '', method: 'spaceAppPermission.hasSpacePermission', params: [username, company] });
