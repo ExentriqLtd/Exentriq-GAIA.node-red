@@ -133,7 +133,7 @@ RED.sidebar.info = (function() {
                             val = val.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
                         }
 
-                        if(node && node.type=='http in' && n=='url'){
+                        if(node && (node.type=='http in' || node.type=='httpInMultipart') && n=='url'){
                             var servicePath = RED.settings.servicePath;
                             if(!servicePath.endsWith('/')){
                         	servicePath+='/';
