@@ -49,9 +49,9 @@ function init(runtime) {
 function needsPermission(permission) {
     return function(req,res,next) {
 	//Calogero 24/01/2017 authorize twitter oauth url
-	if(req.originalUrl.startsWith('/twitter-credentials')){
-		return next();
-	}
+//	if(req.originalUrl.startsWith('/twitter-credentials')){
+//		return next();
+//	}
         if (settings && settings.adminAuth) {
             return passport.authenticate(['bearer','anon'],{ session: false })(req,res,function() {
                 if (!req.user) {
