@@ -1,6 +1,6 @@
 {
   "name": "node-red-gaia",
-  "version": "0.14.15",
+  "version": "0.14.16",
   "description": "A visual tool for wiring the Internet of Things (Fork of node-red@0.14.6)",
   "homepage": "http://nodered.org",
   "license": "Apache-2.0",
