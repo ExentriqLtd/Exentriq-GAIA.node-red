@@ -1,0 +1,155 @@
+<script type="text/javascript">
+    RED.nodes.registerType('exentriq-card',{
+        category: 'function',
+        color: '#F2F2F2',
+        defaults: {
+            name: {value:""},
+            project: {value:""},
+            destination: {value:"stage"},
+        },
+        inputs:1,
+        outputs:0,
+        label: function() {
+            return this.name||"exentriq-card";
+        },
+        icon: "exentriq.png",
+        oneditprepare: function(){
+            		    
+		    var reloadBoards = function(){
+				$("#node-input-project").find('option').remove();
+				var space = RED.settings.company.id;
+				var destination = $("#node-input-destination").val();
+        	    if(space){
+        		  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+        		  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
+        		    $("#node-input-project").find('option').remove();
+        		    if(boards && !boards.error){
+	        			boards.forEach(function(board){
+	        				$("#node-input-project").append($('<option>', { value: board._id, text: board.title }));
+	        		    });
+        		    }
+        		  });
+        	    }
+		    }
+		                
+		    $('#node-input-destination').change(function() {
+				reloadBoards();
+		    });
+            $('#node-input-project').ready(function() {
+        		reloadBoards();
+            });
+            
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="exentriq-card">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+	<div class="form-row">
+        <label for="node-input-project"><i class="icon-tag"></i> Project</label>
+		<select id="node-input-project">
+		</select>
+    </div>
+	<div class="form-row">
+        <label for="node-input-destination"><i class="icon-tag"></i> Destination</label>
+		<select id="node-input-destination">
+			<option value="stage">Stage</option>
+			<option value="production">Production</option>
+		</select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="exentriq-card">
+    <p>Create Exentriq Card.</p>
+	<p><b>Project</b>  <i>The Project.</i></p>
+	<p><b>Destination</b>  <i>Where to create card: stage or production environment.</i></p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('exentriq-task',{
+        category: 'function',
+        color: '#F2F2F2',
+        defaults: {
+            name: {value:""},
+            project: {value:""},
+            card: {value:""},
+            destination: {value:"stage"},
+        },
+        inputs:1,
+        outputs:0,
+        label: function() {
+            return this.name||"exentriq-task";
+        },
+        icon: "exentriq.png",
+        oneditprepare: function(){
+            		    
+		    var reloadBoards = function(){
+
+				$("#node-input-project").find('option').remove();
+				var space = RED.settings.company.id
+				var destination = $("#node-input-destination").val();
+        	    if(space){
+        		  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+        		  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
+        			console.log(boards);
+        		    if(boards && !boards.error){
+	        			boards.forEach(function(board){
+	        				$("#node-input-project").append($('<option>', { value: board._id, text: board.title }));
+	        		    });
+        		    }
+        		  });
+        	    }
+		    }
+		    
+		    var reloadCards = function(){
+				$("#node-input-card").find('option').remove();
+				$("#node-input-card").append($('<option>', { value: "2g4fWiRgpvbv3ZWEg", text: "Card1" }));
+		    }
+		                
+		    $('#node-input-destination').change(function() {
+				reloadBoards();
+		    });
+            $('#node-input-project').ready(function() {
+        		reloadBoards();
+            });
+            $('#node-input-project').change(function() {
+				reloadCards();
+		    });
+            
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="exentriq-task">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+	<div class="form-row">
+        <label for="node-input-project"><i class="icon-tag"></i> Project</label>
+		<select id="node-input-project">
+		</select>
+    </div>
+	<div class="form-row">
+        <label for="node-input-card"><i class="icon-tag"></i> Card</label>
+		<select id="node-input-card">
+		</select>
+    </div>
+	<div class="form-row">
+        <label for="node-input-destination"><i class="icon-tag"></i> Destination</label>
+		<select id="node-input-destination">
+			<option value="stage">Stage</option>
+			<option value="production">Production</option>
+		</select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="exentriq-task">
+    <p>Create Exentriq Card.</p>
+	<p><b>Project</b>  <i>The Project.</i></p>
+	<p><b>Card</b>  <i>The Card.</i></p>
+	<p><b>Destination</b>  <i>Where to create task: stage or production environment.</i></p>
+</script>

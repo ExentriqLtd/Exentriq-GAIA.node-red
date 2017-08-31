@@ -74,3 +74,6 @@ Copyright 2013, 2016 IBM Corp. under [the Apache 2.0 license](LICENSE).
 
 ## Exentriq example URL
 http://127.0.0.1:1880/?sessionToken=xyz&username=demo&company=example&css=http://example.com/custom.css&servicePath=http://127.0.0.1:1880/
+
+## Start command
+node red.js --settings /opt/apps/node-red-gaia/settings.js --userDir /opt/apps/node-red-gaia/user_dir
