@@ -101,6 +101,7 @@
 				  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
 				  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
 				    $("#node-input-project").find('option').remove();
+				    $("#node-input-project").append($('<option>', { value: "", text: "" }));
 				    if(boards && !boards.error){
 		        		boards.forEach(function(board){
 			        		var option = { value: board._id, text: board.title };
