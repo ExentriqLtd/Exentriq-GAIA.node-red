@@ -14,7 +14,7 @@
         },
         icon: "exentriq.png",
         oneditprepare: function(){
-            		    
+            var currentProject = this.project;
 		    var reloadBoards = function(){
 				$("#node-input-project").find('option').remove();
 				var space = RED.settings.company.id;
@@ -25,7 +25,11 @@
         		    $("#node-input-project").find('option').remove();
         		    if(boards && !boards.error){
 	        			boards.forEach(function(board){
-	        				$("#node-input-project").append($('<option>', { value: board._id, text: board.title }));
+	        			    var option = { value: board._id, text: board.title };
+	        			    if(currentProject && currentProject==board._id){
+	        					option.selected = 'selected';
+	        			    }
+    						$("#node-input-project").append($('<option>', option));
 	        		    });
         		    }
         		  });
@@ -45,8 +49,8 @@
 
 <script type="text/x-red" data-template-name="exentriq-card">
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-name"><i class="icon-tag"></i> Title</label>
+        <input type="text" id="node-input-name" placeholder="the card title">
     </div>
 	<div class="form-row">
         <label for="node-input-project"><i class="icon-tag"></i> Project</label>
@@ -86,27 +90,49 @@
         icon: "exentriq.png",
         oneditprepare: function(){
             		    
+            var currentProject = this.project;
+            var currentCard = this.card;
+            
 		    var reloadBoards = function(){
-
 				$("#node-input-project").find('option').remove();
-				var space = RED.settings.company.id
+				var space = RED.settings.company.id;
 				var destination = $("#node-input-destination").val();
-        	    if(space){
-        		  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
-        		  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
-        			console.log(boards);
-        		    if(boards && !boards.error){
-	        			boards.forEach(function(board){
-	        				$("#node-input-project").append($('<option>', { value: board._id, text: board.title }));
+			    if(space){
+				  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+				  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
+				    $("#node-input-project").find('option').remove();
+				    if(boards && !boards.error){
+		        		boards.forEach(function(board){
+			        		var option = { value: board._id, text: board.title };
+		        			if(currentProject && currentProject==board._id){
+	        					option.selected = 'selected';
+	        			    }
+							$("#node-input-project").append($('<option>', option));
 	        		    });
-        		    }
-        		  });
-        	    }
+				    }
+				  });
+			    }
+			    reloadCards();
 		    }
 		    
 		    var reloadCards = function(){
 				$("#node-input-card").find('option').remove();
-				$("#node-input-card").append($('<option>', { value: "2g4fWiRgpvbv3ZWEg", text: "Card1" }));
+				var project = $("#node-input-project").val() || currentProject;
+				var destination = $("#node-input-destination").val();
+			    if(project){
+				  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+				  $.get( host + "/api/boards/"+project+"/cards", function( cards ) {
+				    if(cards && !cards.error){
+					cards.forEach(function(card){
+					    var option = { value: card._id, text: card.title };
+					    if(currentCard && currentCard==card._id){
+							option.selected = 'selected';
+					    }
+        				$("#node-input-card").append($('<option>', option));
+        		    });
+				    }
+				  });
+			    }
 		    }
 		                
 		    $('#node-input-destination').change(function() {
@@ -125,8 +151,8 @@
 
 <script type="text/x-red" data-template-name="exentriq-task">
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-name"><i class="icon-tag"></i> Title</label>
+        <input type="text" id="node-input-name" placeholder="The task title">
     </div>
 	<div class="form-row">
         <label for="node-input-project"><i class="icon-tag"></i> Project</label>
