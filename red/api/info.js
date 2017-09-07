@@ -26,7 +26,8 @@ module.exports = {
             httpNodeRoot: settings.httpNodeRoot,
             version: settings.version,
             user: req.user,
-            company: req.authInfo.company
+            company: req.authInfo.company,
+            exentriq: settings.exentriq
         }
 
         var themeSettings = theme.settings();

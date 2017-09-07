@@ -5,22 +5,74 @@
         defaults: {
             name: {value:""},
             project: {value:""},
-            destination: {value:"stage"},
+            members:{value:""}
         },
         inputs:1,
-        outputs:0,
+        outputs:1,
         label: function() {
             return this.name||"exentriq-card";
         },
         icon: "exentriq.png",
         oneditprepare: function(){
+            
+            var space = RED.settings.company.id;
+            
+            var userList = [];
+            var host = RED.settings.exentriq.boardsApiProtocol + '://' + RED.settings.exentriq.boardsApiHost;
+            $.get( host + "/api/spaces/"+space+"/users", function( users ) {
+        		console.log(users);
+			    if(users && !users.error){
+					users.forEach(function(user){
+					    if(user && user.username){
+							userList.push(user.username);
+					    }
+	    		    });
+			    }
+			  });
+
+		    function split( val ) {
+		      return val.split( /,\s*/ );
+		    }
+		    function extractLast( term ) {
+		      return split( term ).pop();
+		    }
+		    
+		    $( "#node-input-members" )
+		      // don't navigate away from the field on tab when selecting an item
+		      .on( "keydown", function( event ) {
+		        if ( event.keyCode === $.ui.keyCode.TAB &&
+		            $( this ).autocomplete( "instance" ).menu.active ) {
+		          event.preventDefault();
+		        }
+		      })
+		      .autocomplete({
+		        minLength: 0,
+		        source: function( request, response ) {
+		          // delegate back to autocomplete, but extract the last term
+		          response( $.ui.autocomplete.filter(
+		        	  userList, extractLast( request.term ) ) );
+		        },
+		        focus: function() {
+		          // prevent value inserted on focus
+		          return false;
+		        },
+		        select: function( event, ui ) {
+		          var terms = split( this.value );
+		          // remove the current input
+		          terms.pop();
+		          // add the selected item
+		          terms.push( ui.item.value );
+		          // add placeholder to get the comma-and-space at the end
+		          terms.push( "" );
+		          this.value = terms.join( ", " );
+		          return false;
+		        }
+		      });            
+            
             var currentProject = this.project;
 		    var reloadBoards = function(){
 				$("#node-input-project").find('option').remove();
-				var space = RED.settings.company.id;
-				var destination = $("#node-input-destination").val();
         	    if(space){
-        		  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
         		  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
         		    $("#node-input-project").find('option').remove();
         		    if(boards && !boards.error){
@@ -36,9 +88,6 @@
         	    }
 		    }
 		                
-		    $('#node-input-destination').change(function() {
-				reloadBoards();
-		    });
             $('#node-input-project').ready(function() {
         		reloadBoards();
             });
@@ -58,18 +107,27 @@
 		</select>
     </div>
 	<div class="form-row">
-        <label for="node-input-destination"><i class="icon-tag"></i> Destination</label>
-		<select id="node-input-destination">
-			<option value="stage">Stage</option>
-			<option value="production">Production</option>
-		</select>
+        <label for="node-input-members"><i class="icon-tag"></i> Members</label>
+        <input type="text" id="node-input-members" placeholder="Card members">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="exentriq-card">
     <p>Create Exentriq Card.</p>
-	<p><b>Project</b>  <i>The Project.</i></p>
-	<p><b>Destination</b>  <i>Where to create card: stage or production environment.</i></p>
+
+	<p><b>Title</b>  <i>The card title. It can contains also points and ETA. Example: Card#1 [50] ETA2017/12/01</i></p>
+	<p><b>Project</b>  <i>The project name.</i></p>
+	<p><b>Members</b>  <i>Comma separated member list.</i></p>
+
+	<p>
+	All parameters can be configured in the node, if they are left blank they should be set in an incoming message:
+	<ul>
+		<li><code>msg.name</code> The card title.
+		<li><code>msg.project</code> The board id.
+		<li><code>msg.members</code> Comma separated member list.
+	</ul>
+	</p>
+
 </script>
 
 <script type="text/javascript">
@@ -80,15 +138,70 @@
             name: {value:""},
             project: {value:""},
             card: {value:""},
-            destination: {value:"stage"},
+            members: {value:""},
+            username: {value:RED.settings.user.username}
         },
         inputs:1,
-        outputs:0,
+        outputs:1,
         label: function() {
             return this.name||"exentriq-task";
         },
         icon: "exentriq.png",
         oneditprepare: function(){
+            
+            var space = RED.settings.company.id;
+            
+            var userList = [];
+            var host = RED.settings.exentriq.boardsApiProtocol + '://' + RED.settings.exentriq.boardsApiHost;
+            $.get( host + "/api/spaces/"+space+"/users", function( users ) {
+        		console.log(users);
+			    if(users && !users.error){
+					users.forEach(function(user){
+					    if(user && user.username){
+							userList.push(user.username);
+					    }
+	    		    });
+			    }
+			  });
+
+		    function split( val ) {
+		      return val.split( /,\s*/ );
+		    }
+		    function extractLast( term ) {
+		      return split( term ).pop();
+		    }
+		    
+		    $( "#node-input-members" )
+		      // don't navigate away from the field on tab when selecting an item
+		      .on( "keydown", function( event ) {
+		        if ( event.keyCode === $.ui.keyCode.TAB &&
+		            $( this ).autocomplete( "instance" ).menu.active ) {
+		          event.preventDefault();
+		        }
+		      })
+		      .autocomplete({
+		        minLength: 0,
+		        source: function( request, response ) {
+		          // delegate back to autocomplete, but extract the last term
+		          response( $.ui.autocomplete.filter(
+		        	  userList, extractLast( request.term ) ) );
+		        },
+		        focus: function() {
+		          // prevent value inserted on focus
+		          return false;
+		        },
+		        select: function( event, ui ) {
+		          var terms = split( this.value );
+		          // remove the current input
+		          terms.pop();
+		          // add the selected item
+		          terms.push( ui.item.value );
+		          // add placeholder to get the comma-and-space at the end
+		          terms.push( "" );
+		          this.value = terms.join( ", " );
+		          return false;
+		        }
+		      });            
             		    
             var currentProject = this.project;
             var currentCard = this.card;
@@ -96,9 +209,8 @@
 		    var reloadBoards = function(){
 				$("#node-input-project").find('option').remove();
 				var space = RED.settings.company.id;
-				var destination = $("#node-input-destination").val();
 			    if(space){
-				  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+				var host = RED.settings.exentriq.boardsApiProtocol + '://' + RED.settings.exentriq.boardsApiHost;
 				  $.get( host + "/api/space/"+space+"/boards", function( boards ) {
 				    $("#node-input-project").find('option').remove();
 				    $("#node-input-project").append($('<option>', { value: "", text: "" }));
@@ -119,10 +231,10 @@
 		    var reloadCards = function(){
 				$("#node-input-card").find('option').remove();
 				var project = $("#node-input-project").val() || currentProject;
-				var destination = $("#node-input-destination").val();
 			    if(project){
-				  var host = (destination=='stage') ? 'https://boards-new-stage.exentriq.com':'https://boards-new.exentriq.com';
+				var host = RED.settings.exentriq.boardsApiProtocol + '://' + RED.settings.exentriq.boardsApiHost;
 				  $.get( host + "/api/boards/"+project+"/cards", function( cards ) {
+				    $("#node-input-card").find('option').remove();
 				    if(cards && !cards.error){
 					cards.forEach(function(card){
 					    var option = { value: card._id, text: card.title };
@@ -136,9 +248,6 @@
 			    }
 		    }
 		                
-		    $('#node-input-destination').change(function() {
-				reloadBoards();
-		    });
             $('#node-input-project').ready(function() {
         		reloadBoards();
             });
@@ -166,17 +275,107 @@
 		</select>
     </div>
 	<div class="form-row">
-        <label for="node-input-destination"><i class="icon-tag"></i> Destination</label>
-		<select id="node-input-destination">
-			<option value="stage">Stage</option>
-			<option value="production">Production</option>
-		</select>
+        <label for="node-input-members"><i class="icon-tag"></i> Members</label>
+        <input type="text" id="node-input-members" placeholder="Card members">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="exentriq-task">
     <p>Create Exentriq Card.</p>
-	<p><b>Project</b>  <i>The Project.</i></p>
-	<p><b>Card</b>  <i>The Card.</i></p>
-	<p><b>Destination</b>  <i>Where to create task: stage or production environment.</i></p>
+	<p><b>Project</b>  <i>The project name.</i></p>
+	<p><b>Card</b>  <i>The card name.</i></p>
+	<p><b>Members</b>  <i>Comma separated member list.</i></p>
+
+	<p>
+	All parameters can be configured in the node, if they are left blank they should be set in an incoming message:
+	<ul>
+		<li><code>msg.name</code> The task title.
+		<li><code>msg.card</code> The card id.
+		<li><code>msg.project</code> The board id.
+		<li><code>msg.members</code> Comma separated member list.
+	</ul>
+	</p>
+
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('exentriq-event',{
+        category: 'function',
+        color: '#F2F2F2',
+        defaults: {
+            name: {value:""},
+            event: {required:true},
+            group:{required:true}
+        },
+        inputs:0,
+        outputs:1,
+        label: function() {
+            return this.name||"New Event";
+        },
+        icon: "exentriq.png",
+        oneditprepare: function(){
+            
+            var guid = function() {
+                function s4() {
+                  return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+                }
+                return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                  s4() + '-' + s4() + s4() + s4();
+              }
+            if(!this.group){
+        		this.group = guid();
+            }
+           
+        }
+       
+    });
+</script>
+
+<script type="text/x-red" data-template-name="exentriq-event">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="the node name">
+    </div>
+	<div class="form-row">
+        <label for="node-input-event"><i class="icon-tag"></i> Event Type</label>
+		<select id="node-input-event">
+			<option value="card-created">Card Created</option>
+			<option value="card-moved">Card Moved</option>
+		</select>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="exentriq-event">
+    <p>Exentriq Event</p>
+
+	<p><b>Type</b>  <i>The event type</i></p>
+	<p><b>Name</b>  <i>The node name.</i></p>
+
+	<code style="display:block;white-space:pre-wrap">
+
+# Example Event
+
+{
+  "event": "ExentriqUI", 
+  "id": "", 
+  "space": "53110", 
+  "type": "card-moved",
+  "attribute": "", 
+  "entities": [
+    {
+      "name": "Event", 
+      "value": {
+        "cardId": "001", 
+        "cardName": "Card#1", 
+        "fromList": "l01", 
+        "toList": "l02", 
+        "user": "user@mail.com"
+      }
+    }
+  ]
+}
+	</code>
+
 </script>

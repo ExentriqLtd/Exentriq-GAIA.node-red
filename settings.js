@@ -19,6 +19,14 @@
 //var fs = require("fs");
 
 module.exports = {
+
+    // Exentriq Settings
+    exentriq:{
+	clusterZookeeper: "37.187.137.140:5181",
+	boardsApiHost: "boards-new-stage.exentriq.com",
+	boardsApiProtocol: "https"
+    },
+	
     // the tcp port that the Node-RED web server is listening on
     uiPort: process.env.PORT || 1880,
 
