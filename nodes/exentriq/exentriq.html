@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('exentriq-card',{
+    RED.nodes.registerType('edo-card',{
         category: 'function',
         color: '#F2F2F2',
         defaults: {
@@ -10,7 +10,7 @@
         inputs:1,
         outputs:1,
         label: function() {
-            return this.name||"exentriq-card";
+            return this.name||"edo-card";
         },
         icon: "exentriq.png",
         oneditprepare: function(){
@@ -96,7 +96,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="exentriq-card">
+<script type="text/x-red" data-template-name="edo-card">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Title</label>
         <input type="text" id="node-input-name" placeholder="the card title">
@@ -112,8 +112,8 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="exentriq-card">
-    <p>Create Exentriq Card.</p>
+<script type="text/x-red" data-help-name="edo-card">
+    <p>Create Edo Card.</p>
 
 	<p><b>Title</b>  <i>The card title. It can contains also points and ETA. Example: Card#1 [50] ETA2017/12/01</i></p>
 	<p><b>Project</b>  <i>The project name.</i></p>
@@ -131,7 +131,7 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('exentriq-task',{
+    RED.nodes.registerType('edo-task',{
         category: 'function',
         color: '#F2F2F2',
         defaults: {
@@ -144,7 +144,7 @@
         inputs:1,
         outputs:1,
         label: function() {
-            return this.name||"exentriq-task";
+            return this.name||"edo-task";
         },
         icon: "exentriq.png",
         oneditprepare: function(){
@@ -259,7 +259,7 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="exentriq-task">
+<script type="text/x-red" data-template-name="edo-task">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Title</label>
         <input type="text" id="node-input-name" placeholder="The task title">
@@ -280,8 +280,8 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="exentriq-task">
-    <p>Create Exentriq Card.</p>
+<script type="text/x-red" data-help-name="edo-task">
+    <p>Create Edo Task.</p>
 	<p><b>Project</b>  <i>The project name.</i></p>
 	<p><b>Card</b>  <i>The card name.</i></p>
 	<p><b>Members</b>  <i>Comma separated member list.</i></p>

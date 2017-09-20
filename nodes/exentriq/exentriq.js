@@ -3,7 +3,7 @@ module.exports = function(RED) {
     var http = require("follow-redirects").http;
     var https = require("follow-redirects").https;
     
-    function ExentriqCardNode(n) {
+    function EdoCardNode(n) {
 	RED.nodes.createNode(this,n);
 	
 	this.space = n.space;
@@ -32,7 +32,6 @@ module.exports = function(RED) {
 	    var post_data = JSON.stringify(data);
 	    
 	    var host = RED.settings.exentriq.boardsApiHost;
-	    console.log(host);
 	    var post_options = {
 	      "host": host,
 	      "path": "/api/cards/createCard",
@@ -42,12 +41,22 @@ module.exports = function(RED) {
               }
 	    };
 	    
+	    node.status({fill:"green",shape:"dot",text:"creating card..."});
 	    var post_req = https.request(post_options, function (res) {
 		res.setEncoding('utf8');
 		res.on('data', function (chunk) {
-			msg.payload = chunk;
+		    	node.status({});
+			msg.payload = JSON.parse(chunk);
+			msg.project = node.project;
+			if(msg.payload.cardId){
+			    msg.card = msg.payload.cardId;
+			}
 			node.send(msg);
 		});
+	    }).on('error', function (err) {
+		node.status({fill:"red",shape:"dot",text:"card creation error!"});
+		msg.payload = err;
+		node.send(msg);
 	    });
 		
 	    post_req.write(post_data);
@@ -55,9 +64,9 @@ module.exports = function(RED) {
 	});
     }
     
-    RED.nodes.registerType("exentriq-card", ExentriqCardNode);
+    RED.nodes.registerType("edo-card", EdoCardNode);
     
-    function ExentriqTaskNode(n) {
+    function EdoTaskNode(n) {
 	RED.nodes.createNode(this,n);
 	
 	this.space = n.space;
@@ -71,19 +80,16 @@ module.exports = function(RED) {
 	
 	node.on("input", function(msg) {
 	    if(msg.project){
-		node.project = msg.payload.project;
+		node.project = msg.project;
 	    }
 	    if(msg.card){
-		node.card = msg.payload.card;
+		node.card = msg.card;
 	    }
 	    if(msg.name){
-		node.name = msg.payload.name;
+		node.name = msg.name;
 	    }
 	    if(msg.members){
-		node.members = msg.payload.members;
-	    }
-	    if(msg.username){
-		node.username = msg.payload.username;
+		node.members = msg.members;
 	    }
 	    	    
 	    var data = { "taskTitle":node.name,  "boardId":node.project, "cardId":node.card, "username": node.username };
@@ -103,12 +109,18 @@ module.exports = function(RED) {
               }
 	    };
 	    
+	    node.status({fill:"green",shape:"dot",text:"creating task..."});
 	    var post_req = https.request(post_options, function (res) {
 		res.setEncoding('utf8');
 		res.on('data', function (chunk) {
+		        node.status({});
 			msg.payload = chunk;
 			node.send(msg);
 		});
+	    }).on('error', function (err) {
+		node.status({fill:"red",shape:"dot",text:"task creation error!"});
+		msg.payload = err;
+		node.send(msg);
 	    });
 		
 	    post_req.write(post_data);
@@ -116,7 +128,7 @@ module.exports = function(RED) {
 	});
     }
     
-    RED.nodes.registerType("exentriq-task", ExentriqTaskNode);
+    RED.nodes.registerType("edo-task", EdoTaskNode);
     
     function ExentriqEventNode(config) {
         RED.nodes.createNode(this,config);
@@ -127,7 +139,7 @@ module.exports = function(RED) {
         var HighLevelConsumer = kafka.HighLevelConsumer;
         var Client = kafka.Client;
         var topics = "ExentriqUIEvent";
-        var clusterZookeeper = RED.settings.exentriq.clusterZookeeper;//"37.187.137.140:5181"; //Stage
+        var clusterZookeeper = RED.settings.exentriq.clusterZookeeper;
         var groupId = config.group;
         var type = config.event;
         var space = config.owner;
