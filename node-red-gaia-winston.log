@@ -1,0 +1,48 @@
+{"level":"info","msg":"Node-RED version: v0.14.16-git","timestamp":"2017-11-10T15:14:03.593Z","message":""}
+{"level":"info","msg":"Node.js  version: v6.12.0","timestamp":"2017-11-10T15:14:03.596Z","message":""}
+{"level":"info","msg":"Linux 3.13.0-135-generic x64 LE","timestamp":"2017-11-10T15:14:03.596Z","message":""}
+{"level":"info","msg":"Loading palette nodes","timestamp":"2017-11-10T15:14:03.596Z","message":""}
+{"level":"info","msg":"------------------------------------------------------","timestamp":"2017-11-10T15:14:10.238Z","message":""}
+{"level":"info","msg":"[rpi-gpio] Info : Ignoring Raspberry Pi specific node","timestamp":"2017-11-10T15:14:10.239Z","message":""}
+{"level":"info","msg":"------------------------------------------------------","timestamp":"2017-11-10T15:14:10.239Z","message":""}
+{"level":"info","msg":"Settings file  : /opt/apps/node-red-gaia/settings.js","timestamp":"2017-11-10T15:14:10.240Z","message":""}
+{"level":"info","msg":"User directory : /opt/apps/node-red-gaia/user_dir","timestamp":"2017-11-10T15:14:10.240Z","message":""}
+{"level":"info","msg":"Flows file     : /opt/apps/node-red-gaia/user_dir/flows_crapanzano-pc.json","timestamp":"2017-11-10T15:14:10.240Z","message":""}
+{"level":"info","msg":"Server now running at http://127.0.0.1:1880/","timestamp":"2017-11-10T15:14:10.291Z","message":""}
+{"level":"info","msg":"Starting flows","timestamp":"2017-11-10T15:14:10.296Z","message":""}
+{"level":"info","id":"79338a23.5b81c4","type":"exentriq-event","msg":"Consumer created...","timestamp":"2017-11-10T15:14:10.780Z","message":""}
+{"level":"info","msg":"Started flows","timestamp":"2017-11-10T15:14:10.782Z","message":""}
+{"event":"auth.invalid-token","level":"info","timestamp":"2017-11-10T15:14:58.230Z","message":""}
+{"event":"auth.login","username":"{\"username\":\"calogero@exentriq.com\",\"company\":\"53263\"}","client":"node-red-editor","scope":"*","level":"info","timestamp":"2017-11-10T15:14:59.318Z","message":""}
+{"event":"library.get.all","type":"flow","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/library/flows","ip":"127.0.0.1","timestamp":"2017-11-10T15:14:59.677Z","message":""}
+{"event":"comms.open","level":"info","timestamp":"2017-11-10T15:14:59.685Z","message":""}
+{"event":"nodes.list.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/nodes","ip":"127.0.0.1","timestamp":"2017-11-10T15:14:59.690Z","message":""}
+{"event":"comms.auth","user":{"username":"calogero@exentriq.com","permissions":"*"},"level":"info","timestamp":"2017-11-10T15:14:59.731Z","message":""}
+{"event":"nodes.configs.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/nodes","ip":"127.0.0.1","timestamp":"2017-11-10T15:14:59.761Z","message":""}
+{"event":"flows.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/flows","ip":"127.0.0.1","timestamp":"2017-11-10T15:14:59.910Z","message":""}
+{"level":"info","msg":"Stopping flows","timestamp":"2017-11-10T15:15:27.920Z","message":""}
+{"level":"info","msg":"Node-RED version: v0.14.16-git","timestamp":"2017-11-10T15:15:28.835Z","message":""}
+{"level":"info","msg":"Node.js  version: v6.12.0","timestamp":"2017-11-10T15:15:28.837Z","message":""}
+{"level":"info","msg":"Linux 3.13.0-135-generic x64 LE","timestamp":"2017-11-10T15:15:28.837Z","message":""}
+{"level":"info","msg":"Loading palette nodes","timestamp":"2017-11-10T15:15:28.838Z","message":""}
+{"level":"info","msg":"------------------------------------------------------","timestamp":"2017-11-10T15:15:29.469Z","message":""}
+{"level":"info","msg":"[rpi-gpio] Info : Ignoring Raspberry Pi specific node","timestamp":"2017-11-10T15:15:29.470Z","message":""}
+{"level":"info","msg":"------------------------------------------------------","timestamp":"2017-11-10T15:15:29.470Z","message":""}
+{"level":"info","msg":"Settings file  : /opt/apps/node-red-gaia/settings.js","timestamp":"2017-11-10T15:15:29.470Z","message":""}
+{"level":"info","msg":"User directory : /opt/apps/node-red-gaia/user_dir","timestamp":"2017-11-10T15:15:29.471Z","message":""}
+{"level":"info","msg":"Flows file     : /opt/apps/node-red-gaia/user_dir/flows_crapanzano-pc.json","timestamp":"2017-11-10T15:15:29.471Z","message":""}
+{"level":"info","msg":"Server now running at http://127.0.0.1:1880/","timestamp":"2017-11-10T15:15:29.484Z","message":""}
+{"level":"info","msg":"Starting flows","timestamp":"2017-11-10T15:15:29.490Z","message":""}
+{"level":"info","id":"79338a23.5b81c4","type":"exentriq-event","msg":"Consumer created...","timestamp":"2017-11-10T15:15:29.582Z","message":""}
+{"level":"info","msg":"Started flows","timestamp":"2017-11-10T15:15:29.584Z","message":""}
+{"event":"comms.open","level":"info","timestamp":"2017-11-10T15:15:29.947Z","message":""}
+{"event":"comms.auth","user":{"username":"calogero@exentriq.com","permissions":"*"},"level":"info","timestamp":"2017-11-10T15:15:29.952Z","message":""}
+{"event":"comms.close","user":{"username":"calogero@exentriq.com","permissions":"*"},"level":"info","timestamp":"2017-11-10T15:15:32.790Z","message":""}
+{"event":"library.get.all","type":"flow","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/library/flows","ip":"127.0.0.1","timestamp":"2017-11-10T15:15:33.042Z","message":""}
+{"event":"comms.open","level":"info","timestamp":"2017-11-10T15:15:33.083Z","message":""}
+{"event":"nodes.list.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/nodes","ip":"127.0.0.1","timestamp":"2017-11-10T15:15:33.094Z","message":""}
+{"event":"comms.auth","user":{"username":"calogero@exentriq.com","permissions":"*"},"level":"info","timestamp":"2017-11-10T15:15:33.101Z","message":""}
+{"event":"nodes.configs.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/nodes","ip":"127.0.0.1","timestamp":"2017-11-10T15:15:33.126Z","message":""}
+{"event":"flows.get","level":"info","user":{"username":"calogero@exentriq.com","permissions":"*"},"path":"/flows","ip":"127.0.0.1","timestamp":"2017-11-10T15:15:33.258Z","message":""}
+{"level":"info","id":"79338a23.5b81c4","type":"exentriq-event","msg":"Consumer created...","timestamp":"2017-11-10T15:16:00.442Z","message":""}
+{"level":"info","msg":"Stopping flows","timestamp":"2017-11-10T15:16:30.866Z","message":""}

@@ -70,6 +70,9 @@ function init(_server,_runtime) {
     log = runtime.log;
     if (settings.httpNodeRoot !== false) {
         nodeApp = express();
+        var maxUploadSize '50mb';
+        nodeApp.use(bodyParser.json({limit:maxUploadSize}));
+        nodeApp.use(bodyParser.urlencoded({limit:maxUploadSize,extended:true}));
     }
     if (settings.httpAdminRoot !== false) {
         comms.init(server,runtime);
