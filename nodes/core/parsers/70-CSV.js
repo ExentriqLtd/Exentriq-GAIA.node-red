@@ -27,6 +27,7 @@ module.exports = function(RED) {
         this.multi = n.multi || "one";
         this.hdrin = n.hdrin || false;
         this.hdrout = n.hdrout || false;
+        this.raw_values = n.raw_values || false;
         this.goodtmpl = true;
         var node = this;
 
@@ -135,7 +136,12 @@ module.exports = function(RED) {
                                 else if ((line[i] === node.sep) && f) { // if it is the end of the line then finish
                                     if (!node.goodtmpl) { node.template[j] = "col"+(j+1); }
                                     if ( node.template[j] && (node.template[j] !== "") && (k[j] !== "" ) ) {
-                                        if ( reg.test(k[j]) ) { k[j] = parseFloat(k[j]); }
+                                        if ( reg.test(k[j]) ) { 
+                                            if(node.raw_values){
+                                                o[node.template[j]+'__raw'] = k[j];
+                                            }
+                                            k[j] = parseFloat(k[j]);
+                                        }
                                         o[node.template[j]] = k[j];
                                     }
                                     j += 1;
