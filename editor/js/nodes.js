@@ -153,7 +153,7 @@ RED.nodes = (function() {
 
     function addNode(n) {
 	if(!n.owner){
-	    n.owner=RED.settings.company.id;
+	    n.owner=RED.exentriq.getOwner();
         }
 	
         if (n.type.indexOf("subflow") !== 0) {
@@ -393,7 +393,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
         
         for (var d in n._def.defaults) {
@@ -416,7 +416,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
         if (node.type == "unknown") {
             for (var p in n._orig) {
@@ -481,7 +481,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
 
         n.in.forEach(function(p) {

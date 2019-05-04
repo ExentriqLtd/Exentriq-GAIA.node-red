@@ -70,7 +70,7 @@ var RED = (function() {
         $.ajax({
             headers: {
                 "Accept":"application/json",
-                "company":RED.settings.company.id
+                "owner":RED.exentriq.getOwner()
             },
             cache: false,
             url: 'flows',

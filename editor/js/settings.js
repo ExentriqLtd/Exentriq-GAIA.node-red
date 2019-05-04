@@ -107,6 +107,12 @@ RED.settings = (function () {
             var servicePath = servicePathMatch[1];
         }
 
+        var group = '';
+        var groupMatch = /[?&]group=(.*?)(?:$|&)/.exec(window.location.search);
+        if (groupMatch) {
+            var group = groupMatch[1];
+        }
+
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
                 // Only attach auth header for requests to relative paths
@@ -120,10 +126,10 @@ RED.settings = (function () {
         });
         
         RED.settings.servicePath=servicePath;
-        load(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath);
+        load(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath, group);
     }
 
-    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath) {
+    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath, group) {
         $.ajax({
             headers: {
                 "Accept": "application/json"
@@ -147,7 +153,7 @@ RED.settings = (function () {
                     
                 	if(exentriqToken){
                 	    
-                	var userAndCompany = JSON.stringify({"username":exentriqUsername, "company":exentriqCompany});    
+                	var userAndCompany = JSON.stringify({"username":exentriqUsername, "company":exentriqCompany, "group":group});    
                 	    
                 	var body = {
                                 client_id: "node-red-editor",

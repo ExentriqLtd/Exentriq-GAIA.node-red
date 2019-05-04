@@ -77,7 +77,7 @@ var passwordTokenExchange = function(client, username, password, scope, done) {
             attemptCount++;
         }
     });
-    if (attemptCount > 5) {
+    if (attemptCount > 50) {
         log.audit({event: "auth.login.fail.too-many-attempts",username:username,client:client.id});
         done(new Error("Too many login attempts. Wait 10 minutes and try again"),false);
         return;

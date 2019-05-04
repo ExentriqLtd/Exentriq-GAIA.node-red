@@ -845,10 +845,6 @@ RED.editor = (function() {
                 tabSelect.append('<option value=""'+(!editing_config_node.z?" selected":"")+' data-i18n="sidebar.config.global"></option>');
                 tabSelect.append('<option disabled data-i18n="sidebar.config.flows"></option>');
                 RED.nodes.eachWorkspace(function(ws) {
-                      //Calogero: not needed, because api returns only user nodes
-//                    if(ws.owner && ws.owner!=RED.settings.user.username){
-//                	return;
-//                    }
                     var workspaceLabel = ws.label;
                     if (nodeUserFlows[ws.id]) {
                         workspaceLabel = "* "+workspaceLabel;
@@ -1159,10 +1155,6 @@ RED.editor = (function() {
                 }
 
                 configNodes.forEach(function(cn) {
-                      //Calogero: not needed, because api returns only user nodes
-//                    if(cn.owner && cn.owner!=RED.settings.user.username){
-//                	return;
-//                    }
                     select.append('<option value="'+cn.id+'"'+(value==cn.id?" selected":"")+'>'+cn.__label__+'</option>');
                     delete cn.__label__;
                 });

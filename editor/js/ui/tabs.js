@@ -119,10 +119,6 @@ RED.tabs = (function() {
 
         return {
             addTab: function(tab) {
-        	//Calogero: not needed, because api returns only user nodes
-//        	if(tab.owner && tab.owner!=RED.settings.user.username){
-//        	    return;
-//        	}
                 tabs[tab.id] = tab;
                 var li = $("<li/>",{class:"red-ui-tab"}).appendTo(ul);
                 li.data("tabId",tab.id);

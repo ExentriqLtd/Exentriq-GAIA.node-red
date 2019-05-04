@@ -70,7 +70,7 @@ var RED = (function() {
         $.ajax({
             headers: {
                 "Accept":"application/json",
-                "company":RED.settings.company.id
+                "owner":RED.exentriq.getOwner()
             },
             cache: false,
             url: 'flows',
@@ -454,6 +454,12 @@ RED.settings = (function () {
             var servicePath = servicePathMatch[1];
         }
 
+        var group = '';
+        var groupMatch = /[?&]group=(.*?)(?:$|&)/.exec(window.location.search);
+        if (groupMatch) {
+            var group = groupMatch[1];
+        }
+
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
                 // Only attach auth header for requests to relative paths
@@ -467,10 +473,10 @@ RED.settings = (function () {
         });
         
         RED.settings.servicePath=servicePath;
-        load(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath);
+        load(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath, group);
     }
 
-    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath) {
+    var load = function(done, exentriqUsername, exentriqToken, exentriqCompany, css, servicePath, group) {
         $.ajax({
             headers: {
                 "Accept": "application/json"
@@ -494,7 +500,7 @@ RED.settings = (function () {
                     
                 	if(exentriqToken){
                 	    
-                	var userAndCompany = JSON.stringify({"username":exentriqUsername, "company":exentriqCompany});    
+                	var userAndCompany = JSON.stringify({"username":exentriqUsername, "company":exentriqCompany, "group":group});    
                 	    
                 	var body = {
                                 client_id: "node-red-editor",
@@ -1093,7 +1099,7 @@ RED.nodes = (function() {
 
     function addNode(n) {
 	if(!n.owner){
-	    n.owner=RED.settings.company.id;
+	    n.owner=RED.exentriq.getOwner();
         }
 	
         if (n.type.indexOf("subflow") !== 0) {
@@ -1333,7 +1339,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
         
         for (var d in n._def.defaults) {
@@ -1356,7 +1362,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
         if (node.type == "unknown") {
             for (var p in n._orig) {
@@ -1421,7 +1427,7 @@ RED.nodes = (function() {
             node.owner=n.owner;
         }
         else{
-            node.owner=RED.settings.company.id;
+            node.owner=RED.exentriq.getOwner();
         }
 
         n.in.forEach(function(p) {
@@ -3206,10 +3212,6 @@ RED.tabs = (function() {
 
         return {
             addTab: function(tab) {
-        	//Calogero: not needed, because api returns only user nodes
-//        	if(tab.owner && tab.owner!=RED.settings.user.username){
-//        	    return;
-//        	}
                 tabs[tab.id] = tab;
                 var li = $("<li/>",{class:"red-ui-tab"}).appendTo(ul);
                 li.data("tabId",tab.id);
@@ -7089,10 +7091,6 @@ RED.sidebar.config = (function() {
         } else {
             var currentType = "";
             nodes.forEach(function(node) {
-        	//Calogero: not needed, because api returns only user nodes
-//        	if(node.owner && node.owner!=RED.settings.user.username){
-//        	    return;
-//        	}
                 var label = "";
                 if (typeof node._def.label == "function") {
                     try {
@@ -7155,18 +7153,10 @@ RED.sidebar.config = (function() {
         getOrCreateCategory("global",globalCategories);
 
         RED.nodes.eachWorkspace(function(ws) {
-            //Calogero: not needed, because api returns only user nodes
-//            if(ws.owner && ws.owner!=RED.settings.user.username){
-//        	return;
-//            }
             validList[ws.id.replace(/\./g,"-")] = true;
             getOrCreateCategory(ws.id,flowCategories,ws.label);
         })
         RED.nodes.eachSubflow(function(sf) {
-            //Calogero: not needed, because api returns only user nodes
-//            if(sf.owner && sf.owner!=RED.settings.user.username){
-//        	return;
-//            }
             validList[sf.id.replace(/\./g,"-")] = true;
             getOrCreateCategory(sf.id,subflowCategories,sf.name);
         })
@@ -8114,10 +8104,6 @@ RED.editor = (function() {
                 tabSelect.append('<option value=""'+(!editing_config_node.z?" selected":"")+' data-i18n="sidebar.config.global"></option>');
                 tabSelect.append('<option disabled data-i18n="sidebar.config.flows"></option>');
                 RED.nodes.eachWorkspace(function(ws) {
-                      //Calogero: not needed, because api returns only user nodes
-//                    if(ws.owner && ws.owner!=RED.settings.user.username){
-//                	return;
-//                    }
                     var workspaceLabel = ws.label;
                     if (nodeUserFlows[ws.id]) {
                         workspaceLabel = "* "+workspaceLabel;
@@ -8428,10 +8414,6 @@ RED.editor = (function() {
                 }
 
                 configNodes.forEach(function(cn) {
-                      //Calogero: not needed, because api returns only user nodes
-//                    if(cn.owner && cn.owner!=RED.settings.user.username){
-//                	return;
-//                    }
                     select.append('<option value="'+cn.id+'"'+(value==cn.id?" selected":"")+'>'+cn.__label__+'</option>');
                     delete cn.__label__;
                 });
@@ -9132,10 +9114,8 @@ RED.library = (function() {
     function loadFlowLibrary() {
         $.getJSON("library/flows",function(allData) {
             
-            var data = allData.d[RED.settings.company.id];
-            if(!data){
-        	data={};
-            }
+            var d = allData.d || {};
+            var data = d[RED.exentriq.getOwner()] || {};
             
             var buildMenu = function(data,root) {
                 var i;
@@ -9149,7 +9129,6 @@ RED.library = (function() {
                 if (data.d) {
                     for (i in data.d) {
                         if (data.d.hasOwnProperty(i)) {
-                            console.log(i);
                             li = document.createElement("li");
                             li.className = "dropdown-submenu pull-left";
                             a = document.createElement("a");
@@ -9171,7 +9150,7 @@ RED.library = (function() {
                             a.innerHTML = data.f[i];
                             a.flowName = root+(root!==""?"/":"")+data.f[i];
                             a.onclick = function() {
-                                $.get('library/flows/'+RED.settings.company.id+"/"+this.flowName, function(data) {
+                                $.get('library/flows/'+RED.exentriq.getOwner()+"/"+this.flowName, function(data) {
                                     RED.view.importNodes(data);
                                 });
                             };
@@ -9238,7 +9217,7 @@ RED.library = (function() {
                             var bcli = $('<li class="active"><span class="divider">/</span> <a href="#">'+dirName+'</a></li>');
                             $("a",bcli).click(function(e) {
                                 $(this).parent().nextAll().remove();
-                                $.getJSON("library/"+options.url+"/"+RED.settings.company.id+root+dirName,function(data) {
+                                $.getJSON("library/"+options.url+"/"+RED.exentriq.getOwner()+root+dirName,function(data) {
                                     $("#node-select-library").children().first().replaceWith(buildFileList(root+dirName+"/",data));
                                 });
                                 e.stopPropagation();
@@ -9246,7 +9225,7 @@ RED.library = (function() {
                             var bc = $("#node-dialog-library-breadcrumbs");
                             $(".active",bc).removeClass("active");
                             bc.append(bcli);
-                            $.getJSON("library/"+options.url+"/"+RED.settings.company.id+root+dirName,function(data) {
+                            $.getJSON("library/"+options.url+"/"+RED.exentriq.getOwner()+root+dirName,function(data) {
                                 $("#node-select-library").children().first().replaceWith(buildFileList(root+dirName+"/",data));
                             });
                         }
@@ -9262,7 +9241,7 @@ RED.library = (function() {
                         return function(e) {
                             $(".list-selected",ul).removeClass("list-selected");
                             $(this).addClass("list-selected");
-                            $.get("library/"+options.url+"/"+RED.settings.company.id+root+item.fn, function(data) {
+                            $.get("library/"+options.url+"/"+RED.exentriq.getOwner()+root+item.fn, function(data) {
                                 selectedLibraryItem = item;
                                 libraryEditor.setValue(data,-1);
                             });
@@ -9291,7 +9270,7 @@ RED.library = (function() {
             bc.children().first().nextAll().remove();
             libraryEditor.setValue('',-1);
 
-            $.getJSON("library/"+options.url+"/"+RED.settings.company.id,function(data) {
+            $.getJSON("library/"+options.url+"/"+RED.exentriq.getOwner(),function(data) {
         	
         	console.log(data);
         	
@@ -9418,7 +9397,7 @@ RED.library = (function() {
                 RED.notify(RED._("library.invalidFilename"),"warning");
                 return;
             }
-            var fullpath = RED.settings.company.id+"/"+pathname+(pathname===""?"":"/")+filename;
+            var fullpath = RED.exentriq.getOwner()+"/"+pathname+(pathname===""?"":"/")+filename;
             if (!overwrite) {
                 //var pathnameParts = pathname.split("/");
                 //var exists = false;
@@ -9568,7 +9547,7 @@ RED.library = (function() {
                             text: RED._("common.label.export"),
                             click: function() {
                                 //TODO: move this to RED.library
-                                var flowName = RED.settings.company.id+"/"+$("#node-input-library-filename").val();
+                                var flowName = RED.exentriq.getOwner()+"/"+$("#node-input-library-filename").val();
                                 if (!/^\s*$/.test(flowName)) {
                                     $.ajax({
                                         url:'library/flows/'+flowName,
@@ -11111,3 +11090,33 @@ RED.touch.radialMenu = (function() {
         }
     });
 })(jQuery);
+;RED.exentriq = (function() {
+
+    function getOwner(){
+        var group = RED.settings.company.group;
+        var company_piece = RED.settings.company.id;
+        var group_piece = group ? '-'+group:'';
+        var owner = company_piece + group_piece;
+        return owner;
+    };
+
+    function isOwner(owner){
+        return (getOwner() == owner);
+    };
+
+    return {
+
+        init: function() {
+
+        },
+
+        printCompany: function() {
+            console.log(RED.settings.company);
+        },
+
+        isOwner: isOwner,
+
+        getOwner: getOwner
+    }
+
+})();

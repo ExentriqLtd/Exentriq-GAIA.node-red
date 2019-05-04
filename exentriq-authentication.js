@@ -32,11 +32,14 @@ module.exports = {
 	   var username = uc.username;
 	   var company = uc.company;
 	   var companyName = '';
+
+	   console.log(usernameAndCompany);
 	   
 	   var entity=JSON.stringify({ id: '', method: 'auth.loginBySessionToken', params: [sessionToken] });
 	   rest({path:exentriqServicePath, method:"POST", entity:entity}).then(function(result) {
 	       
-	       var valid = false;
+		   var valid = false;
+		   console.log(result);
 	       if(result && result.entity && JSON.parse(result.entity).result){
 		   var resUsername = JSON.parse(result.entity).result.username;
 		   if(resUsername==username){
@@ -53,7 +56,7 @@ module.exports = {
 			   }
 			       
 			   if (valid) {
-			       var user = { username: username, permissions: "*", company:{name:companyName, id:company} };
+			       var user = { username: username, permissions: "*", company:{name:companyName, id:company, group:uc.group} };
 			       resolve(user);
 			   } else {
 			       resolve(null);
