@@ -16,3 +16,4 @@ nodes/node-red-nodes/
 node_modules
 locales/zz-ZZ
 nodes/core/locales/zz-ZZ
+node-red-gaia-winston.log
