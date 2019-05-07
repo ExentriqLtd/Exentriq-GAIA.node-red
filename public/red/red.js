@@ -8988,9 +8988,12 @@ RED.clipboard = (function() {
         var v = importInput.val();
         v = v.substring(v.indexOf('['),v.lastIndexOf(']')+1);
         try {
-            JSON.parse(v);
+            var nodes = JSON.parse(v);
+            nodes.forEach(function(node){
+                delete node.owner;
+            });
             importInput.removeClass("input-error");
-            importInput.val(v);
+            importInput.val(JSON.stringify(nodes, null, 2));
             $("#clipboard-dialog-ok").button("enable");
         } catch(err) {
             if (v !== "") {
