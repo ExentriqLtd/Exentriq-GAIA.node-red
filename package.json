@@ -69,7 +69,7 @@
     "winston": "^2.2.0",
     "ws": "0.8.1",
     "xml2js": "0.4.17",
-    "kafka-node": "*"
+    "kafka-node": "0.5.9"
   },
   "optionalDependencies": {
     "node-red-node-serialport": "0.2.*",
