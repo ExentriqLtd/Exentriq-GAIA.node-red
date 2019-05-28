@@ -460,6 +460,17 @@ RED.settings = (function () {
             var group = groupMatch[1];
         }
 
+        $.ajax({
+            url: "http://bus.stage.exentriq.com:1880/api/agent",
+            success: function(data){
+                console.log(data);
+                var robot_name = data.name;
+                $('#header').prepend('<div id="robot" class="robot" style="position:absolute;top:10px"><a href="#">'+robot_name+'</a></div>');
+        
+            },
+            dataType: 'json'
+          });
+
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
                 // Only attach auth header for requests to relative paths

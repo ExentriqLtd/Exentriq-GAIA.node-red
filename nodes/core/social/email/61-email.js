@@ -113,6 +113,7 @@ module.exports = function(RED) {
                     else {
                         var payload = RED.util.ensureString(msg.payload);
                         var plain = msg.plain? RED.util.ensureString(msg.plain):payload;
+                        console.log("PLAIN!!!:" + plain);
                         sendopts.text = plain; // plaintext body
                         if (/<[a-z][\s\S]*>/i.test(payload)) { sendopts.html = payload; } // html body
                         if (msg.attachments) { sendopts.attachments = msg.attachments; } // add attachments
