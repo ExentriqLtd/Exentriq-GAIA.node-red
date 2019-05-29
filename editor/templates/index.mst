@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="vendor/vendor.css">
 <link rel="stylesheet" href="red/style.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {{#page.css}}
 <link rel="stylesheet" href="{{.}}">
 {{/page.css}}
