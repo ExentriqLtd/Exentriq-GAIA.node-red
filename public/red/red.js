@@ -423,53 +423,44 @@ RED.settings = (function () {
             window.location.search = "";
         }
         
-	var exentriqToken = null;
+	    var exentriqToken = null;
         var exentriqTokenMatch = /[?&]sessionToken=(.*?)(?:$|&)/.exec(window.location.search);
         if (exentriqTokenMatch) {
-            var exentriqToken = exentriqTokenMatch[1];
+            exentriqToken = exentriqTokenMatch[1];
             RED.settings.set("auth-tokens",{access_token: null});
         }
         
         var exentriqUsername = null;
         var exentriqUsernameMatch = /[?&]username=(.*?)(?:$|&)/.exec(window.location.search);
         if (exentriqUsernameMatch) {
-            var exentriqUsername = exentriqUsernameMatch[1];
+            exentriqUsername = exentriqUsernameMatch[1];
         }
         
         var exentriqCompany = null;
         var exentriqCompanyMatch = /[?&]company=(.*?)(?:$|&)/.exec(window.location.search);
         if (exentriqCompanyMatch) {
-            var exentriqCompany = exentriqCompanyMatch[1];
+            exentriqCompany = exentriqCompanyMatch[1];
         }
         
         var css = '';
         var cssMatch = /[?&]css=(.*?)(?:$|&)/.exec(window.location.search);
         if (cssMatch) {
-            var css = cssMatch[1];
+            css = cssMatch[1];
         }
         
         var servicePath = '';
         var servicePathMatch = /[?&]servicePath=(.*?)(?:$|&)/.exec(window.location.search);
         if (servicePathMatch) {
-            var servicePath = servicePathMatch[1];
+            servicePath = servicePathMatch[1];
         }
 
         var group = '';
         var groupMatch = /[?&]group=(.*?)(?:$|&)/.exec(window.location.search);
         if (groupMatch) {
-            var group = groupMatch[1];
+            group = groupMatch[1];
         }
 
-        $.ajax({
-            url: "http://bus.stage.exentriq.com:1880/api/agent",
-            success: function(data){
-                console.log(data);
-                var robot_name = data.name;
-                $('#header').prepend('<div id="robot" class="robot"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
-                $('#robot-back').click(function(){window.parent.postMessage(JSON.stringify({action:"close"})); console.log("back");return false;});
-            },
-            dataType: 'json'
-          });
+        console.log(exentriqToken);
 
         $.ajaxSetup({
             beforeSend: function(jqXHR,settings) {
@@ -501,6 +492,33 @@ RED.settings = (function () {
                     RED.settings.remove("auth-tokens");
                 }
                 console.log("Node-RED: " + data.version);
+
+                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":[group]};
+                console.log(RED.settings.exentriq);
+
+                $.ajax({
+                    url: RED.settings.exentriq.rpc+'?sid=1552127866432857',
+                    type: 'POST',
+                    data:JSON.stringify(robot_payload),
+                    contentType: "application/json; charset=utf-8",
+                    success: function(data){
+                        console.log(data);
+                        console.log();
+                        var robot_name = data.name;
+                        $('#header').prepend('<div id="robot" class="robot"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
+                        $('#robot-back').click(function(){window.parent.postMessage(JSON.stringify({action:"close"}),'*'); console.log("back");return false;});
+                    },
+                    error:function(error){
+                        console.log(error);
+                        var robot_name = "TEST";
+                        $('#header').prepend('<div id="robot" class="robot"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
+                        $('#robot-back').click(function(){window.parent.postMessage(JSON.stringify({action:"close"}),'*'); console.log("back");return false;});
+
+                    },
+                    dataType: 'json'
+                });
+ 
+
                 done();
             },
             error: function(jqXHR,textStatus,errorThrown) {
