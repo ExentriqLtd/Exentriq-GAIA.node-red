@@ -56,7 +56,7 @@ module.exports = {
 			   }
 			       
 			   if (valid) {
-			       var user = { username: username, permissions: "*", company:{name:companyName, id:company, group:uc.group} };
+			       var user = { username: username, permissions: "*", company:{name:companyName, id:company, group:uc.group, sessionToken:sessionToken} };
 			       resolve(user);
 			   } else {
 			       resolve(null);

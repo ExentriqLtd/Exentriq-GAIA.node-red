@@ -146,11 +146,17 @@ RED.settings = (function () {
                 }
                 console.log("Node-RED: " + data.version);
 
-                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":["3", "1"]};
+                console.log(RED.settings.settings);
+
+                var company_id = RED.settings.company.id;
+                var group_id = RED.settings.company.group;
+                var session_token = RED.settings.company.sessionToken;
+
+                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":[company_id, group_id]};
                 console.log(RED.settings.exentriq);
 
                 $.ajax({
-                    url: RED.settings.exentriq.rpc+'?sid=1552127866432857',
+                    url: RED.settings.exentriq.rpc+'?sid='+session_token,
                     type: 'POST',
                     data:JSON.stringify(robot_payload),
                     success: function(data){
