@@ -146,18 +146,17 @@ RED.settings = (function () {
                 }
                 console.log("Node-RED: " + data.version);
 
-                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":["1"]};
+                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":["3", "1"]};
                 console.log(RED.settings.exentriq);
 
                 $.ajax({
                     url: RED.settings.exentriq.rpc+'?sid=1552127866432857',
                     type: 'POST',
                     data:JSON.stringify(robot_payload),
-                    contentType: "application/json; charset=utf-8",
                     success: function(data){
                         console.log(data);
                         console.log();
-                        var robot_name = data.name;
+                        var robot_name = data.result.name;
                         $('#header').prepend('<div id="robot" class="robot"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
                         $('#robot-back').click(function(){window.parent.postMessage(JSON.stringify({action:"close"}),'*'); console.log("back");return false;});
                     },
