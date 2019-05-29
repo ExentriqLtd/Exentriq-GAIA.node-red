@@ -118,7 +118,7 @@ RED.settings = (function () {
             success: function(data){
                 console.log(data);
                 var robot_name = data.name;
-                $('#header').prepend('<div id="robot" class="robot" style="position:absolute;"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
+                $('#header').prepend('<div id="robot" class="robot"><a id="robot-back" href="#" class="robot-back"><i class="material-icons">keyboard_arrow_left</i></a><a class="robot-name" href="#">'+robot_name+'</a></div>');
                 $('#robot-back').click(function(){window.parent.postMessage(JSON.stringify({action:"close"})); console.log("back");return false;});
             },
             dataType: 'json'
