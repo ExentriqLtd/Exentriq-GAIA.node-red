@@ -146,7 +146,7 @@ RED.settings = (function () {
                 }
                 console.log("Node-RED: " + data.version);
 
-                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":[group]};
+                var robot_payload = {"id":5253425345345,"method":"processRobotService.getProcessRobot","params":["1"]};
                 console.log(RED.settings.exentriq);
 
                 $.ajax({
