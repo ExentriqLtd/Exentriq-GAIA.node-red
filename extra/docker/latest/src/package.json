@@ -1,0 +1,29 @@
+{
+  "name": "node-red-gaia-docker",
+  "version": "1.0.0",
+  "description": "A visual tool for wiring the Internet of Things",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExentriqLtd/Exentriq-GAIA.node-red.git"
+  },
+  "main": "node_modules/node-red-gaia/red/red.js",
+  "scripts": {
+    "start": "node $NODE_OPTIONS node_modules/node-red-gaia/red.js -v --settings /data/$DEST/settings.js $FLOWS"
+  },
+  "contributors": [
+    {
+      "name": "Calogero Crapanzano"
+    }
+  ],
+  "dependencies": {
+    "node-red-gaia": "git+https://github.com/ExentriqLtd/Exentriq-GAIA.node-red.git",
+    "node-red-node-base64": "*",
+    "node-red-node-msgpack": "*",
+    "node-red-node-random": "*",
+    "node-red-node-suncalc": "*"
+  },
+  "engines": {
+    "node": "6.*.*"
+  }
+}
