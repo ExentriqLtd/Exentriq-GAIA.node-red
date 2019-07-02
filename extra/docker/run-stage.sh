@@ -1,2 +1,5 @@
 #!/bin/bash
-sudo docker run -it -p 1880:1880 --name gaia-stage exentriq/node-red-gaia
+SPACE=$1
+PORT=$2
+VOLUME=GAIA_SPACE_$1
+sudo docker run -it --mount source=$VOLUME,target=/data -p $PORT:1880 --name gaia-stage-space$SPACE exentriq/node-red-gaia
