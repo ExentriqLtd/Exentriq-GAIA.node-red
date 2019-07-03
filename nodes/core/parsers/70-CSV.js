@@ -28,6 +28,7 @@ module.exports = function(RED) {
         this.hdrin = n.hdrin || false;
         this.hdrout = n.hdrout || false;
         this.raw_values = n.raw_values || false;
+        this.use_quote= n.use_quote;
         this.goodtmpl = true;
         var node = this;
 
@@ -47,6 +48,7 @@ module.exports = function(RED) {
         node.template = clean(node.template);
 
         this.on("input", function(msg) {
+            console.log(node.use_quote);
             if (msg.hasOwnProperty("payload")) {
                 if (typeof msg.payload == "object") { // convert object to CSV string
                     try {
@@ -128,7 +130,7 @@ module.exports = function(RED) {
                                 else { tmp += line[i]; }
                             }
                             else {
-                                if (line[i] === node.quo) { // if it's a quote toggle inside or outside
+                                if (line[i] === node.quo && node.use_quote) { // if it's a quote toggle inside or outside
                                     f = !f;
                                     if (line[i-1] === node.quo) { k[j] += '\"'; } // if it's a quotequote then it's actually a quote
                                     //if ((line[i-1] !== node.sep) && (line[i+1] !== node.sep)) { k[j] += line[i]; }

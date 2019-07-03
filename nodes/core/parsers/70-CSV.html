@@ -49,6 +49,10 @@
         <input style="width: 30px" type="checkbox" id="node-input-raw_values"><label style="width: auto;" for="node-input-raw_values"><span>Add raw entries for numeric values</span></span>
     </div>
     <div class="form-row">
+        <label style="margin-left: 10px; margin-right: -10px;"><i class="fa fa-sign-in"></i> <span data-i18n="csv.label.input"></span></label>
+        <input style="width: 30px" type="checkbox" id="node-input-use_quote"><label style="width: auto;" for="node-input-use_quote"><span>Use quote</span></span>
+    </div>
+    <div class="form-row">
         <label style="margin-left: 10px; margin-right: -10px;"><i class="fa fa-sign-out"></i> <span data-i18n="csv.label.output"></span></label>
         <select type="text" id="node-input-multi" style="width: 250px;">
             <option value="one" data-i18n="csv.output.row"></option>
@@ -95,6 +99,7 @@
             hdrin: {value:""},
             hdrout: {value:""},
             raw_values:{value:false},
+            use_quote:{value:true},
             multi: {value:"one",required:true},
             ret: {value:'\\n'},
             temp: {value:""}
