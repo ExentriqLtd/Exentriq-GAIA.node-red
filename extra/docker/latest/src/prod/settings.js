@@ -27,7 +27,7 @@ module.exports = {
     boardsApiProtocol: "https",
     rpc: "https://www.exentriq.com/JSON-RPC"
     },
-	
+
     // the tcp port that the Node-RED web server is listening on
     uiPort: process.env.PORT || 1880,
 
@@ -93,7 +93,7 @@ module.exports = {
     // that should be served at http://localhost:1880/.
     //httpStatic: '/home/nol/node-red-static/',
 
-    // If you installed the optional node-red-dashboard you can set it's path 
+    // If you installed the optional node-red-dashboard you can set it's path
     // relative to httpRoot
     //ui: { path: "ui" },
 
@@ -101,7 +101,7 @@ module.exports = {
     // -----------------
     // To password protect the Node-RED editor and admin API, the following
     // property can be used. See http://nodered.org/docs/security.html for details.
-    adminAuth: require("/data/prod/exentriq-authentication.js"),
+    adminAuth: require("/exentriq/prod/exentriq-authentication.js"),
 
     // To password protect the node-defined HTTP endpoints (httpNodeRoot), or
     // the static content (httpStatic), the following properties can be used.

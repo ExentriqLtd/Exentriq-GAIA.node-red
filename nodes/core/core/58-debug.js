@@ -43,7 +43,7 @@ module.exports = function(RED) {
                     node.log("\n"+util.inspect(msg, {colors:useColors, depth:10}));
                 }
                 if (this.active) {
-                    sendDebug({id:this.id,name:this.name,topic:msg.topic,msg:msg,_path:msg._path, owner:this.owner});
+                    sendDebug({id:this.id,name:this.name,topic:msg.topic,msg:msg,_path:msg._path, owner:node.owner});
                 }
             } else {
             // debug user defined msg property
@@ -76,7 +76,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("debug",DebugNode);
 
     function sendDebug(msg) {
-		
+
         if (msg.msg instanceof Error) {
             msg.format = "error";
             msg.msg = msg.msg.toString();

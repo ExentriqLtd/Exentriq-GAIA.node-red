@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo docker build -t exentriq/node-red-gaia latest/
+sudo docker build --no-cache -t exentriq/node-red-gaia latest/

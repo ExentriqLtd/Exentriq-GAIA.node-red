@@ -1,4 +1,4 @@
-var exentriqServicePath = 'http://stage.exentriq.com/JSON-RPC';
+var exentriqServicePath = 'https://stage.exentriq.com/JSON-RPC';
 var when = require("when");
 var rest = require('rest');
 require('when/es6-shim/Promise');
@@ -8,7 +8,7 @@ module.exports = {
    type: "credentials",
    users: function(username) {
        return when.promise(function(resolve) {
-	   
+
            // Do whatever work is needed to check username is a valid
            // user.
 	   var valid = true;
@@ -27,17 +27,20 @@ module.exports = {
        return when.promise(function(resolve) {
            // Do whatever work is needed to validate the username/password
            // combination.
-	   
+
 	   var uc = JSON.parse(usernameAndCompany);
 	   var username = uc.username;
 	   var company = uc.company;
 	   var companyName = '';
 
 	   console.log(usernameAndCompany);
-	   
+
+
+	   // IGNORE CERTIFICATE VALIDATION -> process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+
 	   var entity=JSON.stringify({ id: '', method: 'auth.loginBySessionToken', params: [sessionToken] });
 	   rest({path:exentriqServicePath, method:"POST", entity:entity}).then(function(result) {
-	       
+
 		   var valid = false;
 		   console.log(result);
 	       if(result && result.entity && JSON.parse(result.entity).result){
@@ -45,7 +48,7 @@ module.exports = {
 		   if(resUsername==username){
 		       var entity2=JSON.stringify({ id: '', method: 'spaceAppPermission.hasSpacePermission', params: [username, company] });
 		       rest({path:exentriqServicePath, method:"POST", entity:entity2}).then(function(result) {
-			   
+
 			   if(result && result.entity){
 			       var auth = JSON.parse(JSON.parse(result.entity).result).auth;
 			       if(auth){
@@ -54,7 +57,7 @@ module.exports = {
 				   valid = true;
 			       }
 			   }
-			       
+
 			   if (valid) {
 			       var user = { username: username, permissions: "*", company:{name:companyName, id:company, group:uc.group, sessionToken:sessionToken} };
 			       resolve(user);
@@ -64,7 +67,7 @@ module.exports = {
 		       });
 		   }
 	       }
-	       
+
 	   });
        });
    },

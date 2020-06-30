@@ -9,7 +9,7 @@
   },
   "main": "node_modules/node-red-gaia/red/red.js",
   "scripts": {
-    "start": "node $NODE_OPTIONS node_modules/node-red-gaia/red.js -v --settings /data/$DEST/settings.js $FLOWS"
+    "start": "node $NODE_OPTIONS node_modules/node-red-gaia/red.js -v --settings /exentriq/$DEST/settings.js $FLOWS"
   },
   "contributors": [
     {
@@ -37,7 +37,9 @@
     "node-red-node-base64": "*",
     "node-red-node-msgpack": "*",
     "node-red-node-random": "*",
-    "node-red-node-suncalc": "*"
+    "node-red-node-suncalc": "*",
+    "node-red-contrib-sftp":"git+https://github.com/ExentriqLtd/Exentriq-GAIA.node-red-contrib-sftp",
+    "node-red-contrib-spreadsheet-in": "git+https://github.com/ExentriqLtd/Exentriq-GAIA.node-red-contrib-spreadsheet-in"
   },
   "engines": {
     "node": "6.*.*"
