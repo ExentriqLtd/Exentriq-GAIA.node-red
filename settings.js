@@ -25,7 +25,8 @@ module.exports = {
 	clusterZookeeper: "37.187.137.140:5181",
 	boardsApiHost: "boards-new-stage.exentriq.com",
     boardsApiProtocol: "https",
-    rpc: "https://stage.exentriq.com/JSON-RPC"
+    rpc: "https://stage.exentriq.com/JSON-RPC",
+    talk: "talk.exentriq.com"
     },
 	
     // the tcp port that the Node-RED web server is listening on
