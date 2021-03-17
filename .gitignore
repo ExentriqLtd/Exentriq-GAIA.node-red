@@ -17,3 +17,4 @@ node_modules
 locales/zz-ZZ
 nodes/core/locales/zz-ZZ
 node-red-gaia-winston.log
+extra/docker/node-red-gaia-1.0.1.zip
